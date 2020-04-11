@@ -24,18 +24,25 @@ public class ArticleService {
 
 
 
-    public int updateArticle(int articleId, Article updateArticle) {
+    public Article updateArticle(int articleId, Article updateArticle) {
         updateArticle.setId(articleId);
+        Article oldArticle = findArticleById(articleId);
+        updateArticle.setCreatedUser(oldArticle.getCreatedUser());
+        updateArticle.setComments(oldArticle.getComments());
+        updateArticle.setLikedUsers(oldArticle.getLikedUsers());
         articleRepository.save(updateArticle);
-        return 1;
+        return updateArticle;
     }
 
     public Article findArticleById(int aid) {
-        return articleRepository.getById(aid);
+        return articleRepository.findById(aid).get();
     }
 
     public List<Article> getArticlesByCategory(String category) {
         List<Article> articles = articleRepository.getArticlesByCategory(category);
+        for (Article article: articles){
+            article.populate();
+        }
         return articles;
     }
 
@@ -50,14 +57,33 @@ public class ArticleService {
         article.getLikedUsers().add(user);
         user.getLikedArticles().add(article);
         articleRepository.save(article);
-        userRepository.save(user);
+        //userRepository.save(user);
         return article;
    }
 
    public Set<Article> getArticlesLikedByUser(User user){
-        return articleRepository.getArticlesLikedBuUser(user.getId());
+        return user.getLikedArticles();
    }
 
+
+    public void deleteArticle(Article article) {
+        articleRepository.deleteLikes(article.getId());
+        articleRepository.deleteComments(article.getId());
+        article.populate();
+        articleRepository.delete(article);
+    }
+
+    public Article unlikeArticle(Article article, User user) {
+        Set<User> likedUsers = article.getLikedUsers();
+        Set<Article> likedArticles = user.getLikedArticles();
+        if (likedUsers.contains(user)) {
+            likedUsers.remove(user);
+            likedArticles.remove(article);
+            articleRepository.save(article);
+            userRepository.save(user);
+        }
+        return article;
+    }
 
 
 }

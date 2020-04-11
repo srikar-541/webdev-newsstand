@@ -27,7 +27,8 @@ public class User {
   private Role role;
   private String dateOfBirth;
 
-  @ManyToMany()
+
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "LIKES", joinColumns = @JoinColumn(name = "USER_ID"),
           inverseJoinColumns =  @JoinColumn(name =
                   "ARTICLE_ID"))
@@ -42,6 +43,9 @@ public class User {
   @OneToMany(mappedBy = "user")
   @JsonIgnore
   private List<Comment> comments;
+
+  @OneToMany(mappedBy = "user")
+  private Set<Category> categories;
 
 
   public User() {
@@ -132,22 +136,25 @@ public class User {
     this.role = newUser.role;
     this.dateOfBirth = newUser.dateOfBirth;
 
+
   }
 
   @Override
   public boolean equals(Object o) {
-    if (o == this) {
-      return true;
-    }
+    System.out.println(id);
 
     if (!( o instanceof User )) {
       return false;
     }
 
     User user = (User) o;
+    System.out.println(user.getId());
+    return this.id == user.getId();
 
-    return this.id.intValue() == user.getId().intValue();
-
+  }
+  @Override
+  public int hashCode() {
+    return this.id.hashCode();
   }
 
   public Set<Article> getLikedArticles() {
@@ -172,5 +179,13 @@ public class User {
 
   public void setComments(List<Comment> comments) {
     this.comments = comments;
+  }
+
+  public Set<Category> getCategories() {
+    return categories;
+  }
+
+  public void setCategories(Set<Category> categories) {
+    this.categories = categories;
   }
 }

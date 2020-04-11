@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import com.newsstand.models.*;
 import com.newsstand.repositories.ArticleRepository;
+import com.newsstand.repositories.CategoryRepository;
 import com.newsstand.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,6 +32,8 @@ public class UserController {
     @Autowired
     ArticleRepository ArticleRepository;
     @Autowired
+    CategoryRepository categoryRepository;
+    @Autowired
     ArticleService articleService;
 
     @PostMapping("/api/register")
@@ -47,15 +50,19 @@ public class UserController {
         user.setLikedArticles(new HashSet<>());
         user.setCreatedArticles(new HashSet<>());
         user.setComments(new ArrayList<>());
-
+        Set<Category> userCategories = user.getCategories();
         user = userRepository.save(user);
+        for (Category c: userCategories) {
+            c.setUser(user);
+            categoryRepository.save(c);
+        }
         session.setAttribute("currentUser", user);
         return user;
 
     }
 
     @PostMapping("/api/login")
-    public User login(@RequestBody User user, HttpSession session) {
+    public User login(@RequestBody User user, HttpSession session) throws AuthenticationException {
 
         Iterator<User> userIterator = userRepository.findAll().iterator();
 
@@ -71,7 +78,7 @@ public class UserController {
             }
         }
 
-        return new User();
+        throw new AuthenticationException("Please Sign Up first!");
 
     }
 
@@ -100,7 +107,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/api/users/{userId}")
+    @GetMapping("/api/user/{userId}")
     public User findUserById(@PathVariable Integer userId, HttpSession session) {
 
         Optional<User> optional = userRepository.findById(userId);
@@ -108,14 +115,9 @@ public class UserController {
         if (optional.isPresent()) {
 
             User user = optional.get();
+            user.setPassword("*****");
 
-            User newUser = new User();
-
-            newUser.setId(user.getId());
-            newUser.setUsername(user.getUsername());
-            newUser.setRole(user.getRole());
-
-            return newUser;
+            return user;
 
         }
 
@@ -152,7 +154,7 @@ public class UserController {
     }
 
     @GetMapping("/api/user/{userId}/commentedArticles")
-    public Iterable<Article> findAllArticlesCommentedByUser(@PathVariable("userId") Integer userId) {
+    public Set<Article> findAllArticlesCommentedByUser(@PathVariable("userId") Integer userId) {
 
 
         Optional<User> optionalUser = userRepository.findById(userId);
@@ -160,48 +162,50 @@ public class UserController {
         if (optionalUser.isPresent()) {
 
             User user = optionalUser.get();
-            return user.getCreatedArticles();
+            Set<Article> articles = new HashSet<>();
+            for (Comment c: user.getComments()){
+                articles.add(c.getArticle());
+            }
+            return articles;
         }
-        return new ArrayList<>();
+        return new HashSet<>();
     }
 
-    @GetMapping("/api/user/{userId}/reviews")
-    public String findAllUserReviews(@PathVariable("userId") Integer userId) {
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        Optional<User> optional = userRepository.findById(userId);
+    @PutMapping("/api/user/{uid}")
+    public User update(@PathVariable("uid") Integer userId, @RequestBody User user, HttpSession session) {
 
-        if (optional.isPresent()) {
-            User user = optional.get();
-            List<Comment> reviews = user.getComments();
-            Collections.reverse(reviews);
-            return  gson.toJson(reviews);
-        }
-
-        return gson.toJson(new ArrayList<>());
-    }
-
-    @PutMapping("/api/update")
-    public User update(@RequestBody User user, HttpSession session) {
-
-        Optional<User> optionalObject = userRepository.findById(user.getId());
+        Optional<User> optionalObject = userRepository.findById(userId);
         if (!optionalObject.isPresent()) {
             return new User();
         }
         User existingUser = optionalObject.get();
+
+        Set<Category> oldCategories = existingUser.getCategories();
+        for (Category c: oldCategories) {
+            categoryRepository.delete(c);
+        }
         existingUser.set(user);
+        existingUser.setCategories(new HashSet<>());
+        Set<Category> newCategories = user.getCategories();
+        for (Category c: newCategories) {
+            existingUser.getCategories().add(c);
+            c.setUser(existingUser);
+            categoryRepository.save(c);
+        }
+
         User updatedUser = userRepository.save(existingUser);
         return updatedUser;
     }
 
-    @GetMapping("/api/user/{uid}/liked")
-    public Set<Article> likedArticles(@PathVariable("uid") Integer userId, HttpSession session) throws AuthenticationException {
+    @GetMapping("/api/user/{uid}/comments")
+    public List<Comment> getCommentsByUser(@PathVariable("uid") Integer userId, HttpSession session) throws AuthenticationException {
         User currentUser = (User) session.getAttribute("currentUser");
         User user = findUserById(userId, session);
         if (currentUser != null) {
-            return articleService.getArticlesLikedByUser(user);
+            List<Comment> comments = user.getComments();
+            return comments;
         }
         throw new AuthenticationException("User not logged in");
-
     }
 
 }

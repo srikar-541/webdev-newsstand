@@ -20,4 +20,17 @@ public class CommentService {
         return commentRepository.getComments(article.getId());
 
     }
+
+    public Comment getCommentById(Integer commentId) {
+        return commentRepository.findById(commentId).get();
+    }
+
+    public Comment updateComment(Comment oldComment, Comment newComment) {
+        oldComment.setComment(newComment.getComment());
+        return commentRepository.save(oldComment);
+    }
+
+    public void deleteComment(Comment comment) {
+        commentRepository.delete(comment);
+    }
 }

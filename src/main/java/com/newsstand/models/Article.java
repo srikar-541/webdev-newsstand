@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -26,11 +27,14 @@ public class Article {
     private String content;
     private String category;
 
-    @ManyToMany(mappedBy = "likedArticles")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "LIKES", joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns =  @JoinColumn(name =
+                    "ARTICLE_ID"))
     @JsonIgnore
     private Set<User> likedUsers;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     private User createdUser;
 
@@ -38,14 +42,8 @@ public class Article {
     @JsonIgnore
     private List<Comment> comments;
 
-
-
     @Override
     public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-
         if (!( o instanceof Article )) {
             return false;
         }
@@ -54,6 +52,11 @@ public class Article {
 
         return this.id == article.getId();
     }
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
+
 
     public Integer getId() {
         return id;
@@ -157,5 +160,19 @@ public class Article {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public User getCreatedUser() {
+        return createdUser;
+    }
+
+    public void setCreatedUser(User createdUser) {
+        this.createdUser = createdUser;
+    }
+
+    public void populate(){
+        this.getCreatedUser();
+        this.getLikedUsers();
+        this.getComments();
     }
 }
