@@ -61,6 +61,7 @@ public class UserController {
 
     }
 
+    @CrossOrigin
     @PostMapping("/api/login")
     public User login(@RequestBody User user, HttpSession session) throws AuthenticationException {
 
