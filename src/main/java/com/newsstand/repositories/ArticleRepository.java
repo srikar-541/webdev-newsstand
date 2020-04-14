@@ -23,8 +23,8 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
     List<Article> getArticlesByAuthor(
             @Param("author") String author);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM article WHERE id=(SELECT article_id FROM likes WHERE user_id=:id)")
-    Set<Article> getArticlesLikedBuUser(@Param("id") int id);
+//    @Query(nativeQuery = true, value = "SELECT * FROM article WHERE id=(SELECT article_id FROM likes WHERE user_id=:id)")
+//    Set<Article> getArticlesLikedBuUser(@Param("id") int id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM article WHERE user_id=:id")
     Set<Article> getWrittenByUser(@Param("user_id") int id);
