@@ -52,12 +52,8 @@ public class ArticleService {
     }
 
    public Article likeArticle(Article article, User user){
-        article.setLikedUsers(new HashSet<>());
-        user.setLikedArticles(new HashSet<>());
-        article.getLikedUsers().add(user);
-        user.getLikedArticles().add(article);
-        articleRepository.save(article);
-        //userRepository.save(user);
+        articleRepository.likeArticle(article.getId(),user.getId());
+
         return article;
    }
 
@@ -89,5 +85,7 @@ public class ArticleService {
         return articleRepository.getWrittenByUser(user.getId());
     }
 
-
+    public Set<User> getLikedUsers(Article article){
+        return userRepository.getLikedUsers(article.getId());
+    }
 }

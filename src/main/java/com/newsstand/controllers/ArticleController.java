@@ -102,8 +102,8 @@ public class ArticleController {
     @GetMapping("/api/article/{aid}/likedUsers")
     public Set<User> getLikedUsers(@PathVariable("aid") Integer articleId, HttpSession session) throws AuthenticationException {
        Article article = findArticleById(articleId, session);
-       article.populate();
-       return article.getLikedUsers();
+
+       return service.getLikedUsers(article);
     }
 
     @PostMapping("/api/article/{aid}/like")

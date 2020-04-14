@@ -24,10 +24,17 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
             @Param("author") String author);
 
     @Query(nativeQuery = true, value = "SELECT * FROM article WHERE id=(SELECT article_id FROM likes WHERE user_id=:id)")
-    Set<Article> getArticlesLikedBuUser(@Param("id") int id);
+    Set<Article> getArticlesLikedByUser(@Param("id") int id);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM article WHERE user_id=:id")
+
+
+    @Query(nativeQuery = true, value = "SELECT * FROM article WHERE user_id=:user_id")
     Set<Article> getWrittenByUser(@Param("user_id") int id);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "Insert Into likes VALUES(:userId,:articleId)")
+    void likeArticle( @Param("articleId") int articleId, @Param("userId") int userId);
 
     @Transactional
     @Modifying
