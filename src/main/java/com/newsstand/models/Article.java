@@ -24,7 +24,7 @@ public class Article {
     private String imageUrl;
     private String url;
     private String publishedDate;
-    private String add content;
+    private String content;
     private String category;
 
     @ManyToMany(fetch = FetchType.EAGER)
