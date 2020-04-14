@@ -142,15 +142,12 @@ public class User {
   @Override
   public boolean equals(Object o) {
     System.out.println(id);
-
     if (!( o instanceof User )) {
       return false;
     }
-
     User user = (User) o;
     System.out.println(user.getId());
-    return this.id == user.getId();
-
+    return this.id.equals(user.getId());
   }
   @Override
   public int hashCode() {

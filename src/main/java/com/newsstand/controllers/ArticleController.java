@@ -44,7 +44,8 @@ public class ArticleController {
         User currentUser = (User) session.getAttribute("currentUser");
         Article oldArticle = service.findArticleById(articleId);
         if (currentUser != null) {
-            if ((currentUser.getRole() == Role.EDITOR && oldArticle.getCreatedUser().equals(currentUser)) || (currentUser.getRole() == Role.ADMIN)) {
+            if ((currentUser.getRole() == Role.EDITOR && oldArticle.getCreatedUser().equals(currentUser)) ||
+                    (currentUser.getRole() == Role.ADMIN)) {
                 return service.updateArticle(articleId, article);
             }
             else {
