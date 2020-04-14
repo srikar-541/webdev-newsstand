@@ -21,10 +21,10 @@ public class Article {
     private String author;
     private String title;
     private String description;
-    private String url;
     private String imageUrl;
+    private String url;
     private String publishedDate;
-    private String content;
+    private String add content;
     private String category;
 
     @ManyToMany(fetch = FetchType.EAGER)
