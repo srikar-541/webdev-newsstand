@@ -19,9 +19,6 @@ public class ArticleController {
     @Autowired
     ArticleService service;
 
-
-
-
     @PostMapping("/api/article")
     public Article createArticle(@RequestBody Article newArticle,  HttpSession session) throws AuthenticationException {
         User currentUser = (User) session.getAttribute("currentUser");
@@ -40,7 +37,7 @@ public class ArticleController {
 
     @PutMapping("/api/article/{aid}")
     public Article updateArticle(@PathVariable("aid") int articleId,
-                                 @RequestBody Article article, HttpSession session) throws AuthenticationException{
+                                @RequestBody Article article, HttpSession session) throws AuthenticationException{
         User currentUser = (User) session.getAttribute("currentUser");
         Article oldArticle = service.findArticleById(articleId);
         if (currentUser != null) {
@@ -101,9 +98,9 @@ public class ArticleController {
 
     @GetMapping("/api/article/{aid}/likedUsers")
     public Set<User> getLikedUsers(@PathVariable("aid") Integer articleId, HttpSession session) throws AuthenticationException {
-        Article article = findArticleById(articleId, session);
-        article.populate();
-        return article.getLikedUsers();
+       Article article = findArticleById(articleId, session);
+       article.populate();
+       return article.getLikedUsers();
     }
 
     @PostMapping("/api/article/{aid}/like")
@@ -111,7 +108,7 @@ public class ArticleController {
         User currentUser = (User) session.getAttribute("currentUser");
         Article article = service.findArticleById(articleId);
         if (currentUser != null) {
-            return service.likeArticle(article, currentUser);
+           return service.likeArticle(article, currentUser);
         }
         throw new AuthenticationException("User not logged in");
 
