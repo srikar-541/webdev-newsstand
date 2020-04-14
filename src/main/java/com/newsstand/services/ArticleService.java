@@ -85,5 +85,9 @@ public class ArticleService {
         return article;
     }
 
+    public Set<Article> getArticlesWrittenByUser(User user) {
+        return articleRepository.getWrittenByUser(user.getId());
+    }
+
 
 }

@@ -209,4 +209,14 @@ public class UserController {
         throw new AuthenticationException("User not logged in");
     }
 
+    @GetMapping("/api/user/{uid}/articles")
+    public Set<Article> getArticlesWrittenByUser(@PathVariable("uid") Integer userId, HttpSession session) throws AuthenticationException {
+        User currentUser = (User) session.getAttribute("currentUser");
+        User user = findUserById(userId, session);
+        if (currentUser != null) {
+            return articleService.getArticlesWrittenByUser(user);
+        }
+        throw new AuthenticationException("User not logged in");
+    }
+
 }
