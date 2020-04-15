@@ -51,19 +51,15 @@ public class ArticleService {
         return articles;
     }
 
-   public Article likeArticle(Article article, User user){
-        article.setLikedUsers(new HashSet<>());
-        user.setLikedArticles(new HashSet<>());
-        article.getLikedUsers().add(user);
-        user.getLikedArticles().add(article);
-        articleRepository.save(article);
-        //userRepository.save(user);
-        return article;
-   }
+    public Article likeArticle(Article article, User user){
+        articleRepository.likeArticle(article.getId(),user.getId());
 
-   public Set<Article> getArticlesLikedByUser(User user){
+        return article;
+    }
+
+    public Set<Article> getArticlesLikedByUser(User user){
         return user.getLikedArticles();
-   }
+    }
 
 
     public void deleteArticle(Article article) {
@@ -89,5 +85,7 @@ public class ArticleService {
         return articleRepository.getWrittenByUser(user.getId());
     }
 
-
+    public Set<User> getLikedUsers(Article article){
+        return userRepository.getLikedUsers(article.getId());
+    }
 }

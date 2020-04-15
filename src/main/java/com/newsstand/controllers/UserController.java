@@ -9,7 +9,6 @@ import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpSession;
 
 import com.newsstand.models.*;
-import com.newsstand.repositories.ArticleRepository;
 import com.newsstand.repositories.CategoryRepository;
 import com.newsstand.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,23 +29,20 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    ArticleRepository ArticleRepository;
-    @Autowired
     CategoryRepository categoryRepository;
     @Autowired
     ArticleService articleService;
 
     @PostMapping("/api/register")
-    public User register(@RequestBody User user, HttpSession session) {
+    public User register(@RequestBody User user, HttpSession session) throws AuthenticationException {
 
         Iterator<User> userIterator = this.userRepository.findAll().iterator();
 
         while (userIterator.hasNext()) {
             if (userIterator.next().getUsername().equals(user.getUsername())) {
-                return new User();
+                throw new AuthenticationException("User already exists");
             }
         }
-
         user.setLikedArticles(new HashSet<>());
         user.setCreatedArticles(new HashSet<>());
         user.setComments(new ArrayList<>());
