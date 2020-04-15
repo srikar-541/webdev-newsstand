@@ -29,8 +29,7 @@ public class CommentController {
         User currentUser = (User) session.getAttribute("currentUser");
         Article article = articleService.findArticleById(articleId);
         if (currentUser != null) {
-                Integer userId = currentUser.getId();
-                newComment.setUserId(userId);
+                newComment.setUser(currentUser);
                 newComment.setArticle(article);
                 return service.createComment(newComment);
         }
@@ -42,7 +41,7 @@ public class CommentController {
         User currentUser = (User) session.getAttribute("currentUser");
         Comment comment = service.getCommentById(commentId);
         if (currentUser != null) {
-            if (comment.getUserId().equals(currentUser.getId()) || currentUser.getRole() == Role.ADMIN) {
+            if (comment.getUser().equals(currentUser) || currentUser.getRole() == Role.ADMIN) {
                 return service.updateComment(comment, newComment);
             } else {
                 throw new AuthenticationException("Only User who created the comment can edit it");
@@ -57,7 +56,7 @@ public class CommentController {
         User currentUser = (User) session.getAttribute("currentUser");
         Comment comment = service.getCommentById(commentId);
         if (currentUser != null) {
-            if (comment.getUserId().equals(currentUser.getId()) || currentUser.getRole() == Role.ADMIN) {
+            if (comment.getUser().equals(currentUser) || currentUser.getRole() == Role.ADMIN) {
                 service.deleteComment(comment);
             } else {
                 throw new AuthenticationException("Only User who created the comment can delete it");
@@ -72,7 +71,6 @@ public class CommentController {
         User currentUser = (User) session.getAttribute("currentUser");
         if (currentUser != null){
             return service.getCommentById(commentId);
-
         }
         throw new AuthenticationException("User not logged in");
     }
@@ -87,4 +85,5 @@ public class CommentController {
         }
         throw new AuthenticationException("User not logged in");
     }
+
 }
