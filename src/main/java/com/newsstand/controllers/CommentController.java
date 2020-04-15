@@ -29,9 +29,10 @@ public class CommentController {
         User currentUser = (User) session.getAttribute("currentUser");
         Article article = articleService.findArticleById(articleId);
         if (currentUser != null) {
-                newComment.setUser(currentUser);
-                newComment.setArticle(article);
-                return service.createComment(newComment);
+            newComment.setUser_id(currentUser.getId());
+            newComment.setUser(currentUser);
+            newComment.setArticle(article);
+            return service.createComment(newComment);
         }
         throw new AuthenticationException("User not logged in");
     }
@@ -46,7 +47,6 @@ public class CommentController {
             } else {
                 throw new AuthenticationException("Only User who created the comment can edit it");
             }
-
         }
         throw new AuthenticationException("User not logged in");
     }
@@ -85,5 +85,4 @@ public class CommentController {
         }
         throw new AuthenticationException("User not logged in");
     }
-
 }

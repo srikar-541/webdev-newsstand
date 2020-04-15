@@ -28,6 +28,7 @@ public class Comment {
     private Article article;
 
     @ManyToOne()
+    @JsonIgnore
     @Expose
     private User user;
 
@@ -37,6 +38,9 @@ public class Comment {
     private String comment;
 
     private String commentDate;
+
+    @Column(name="user_id", updatable=false, insertable=false)
+    private Integer user_id;
 
     public Comment() {
 
@@ -80,5 +84,13 @@ public class Comment {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Integer getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
     }
 }
