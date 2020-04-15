@@ -218,5 +218,4 @@ public class UserController {
         }
         throw new AuthenticationException("User not logged in");
     }
-
 }

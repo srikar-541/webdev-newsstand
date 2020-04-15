@@ -86,6 +86,7 @@ public class ArticleService {
     }
 
     public Set<Article> getArticlesWrittenByUser(User user) {
+      System.out.println("insideeeee articlee servicdee"+user.getId());
         return articleRepository.getWrittenByUser(user.getId());
     }
 
