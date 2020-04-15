@@ -28,20 +28,8 @@ public class Comment {
     private Article article;
 
     @ManyToOne()
-    @JsonIgnore
     @Expose
     private User user;
-
-    @Expose
-    private Integer userId;
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     @Expose
     @Lob
