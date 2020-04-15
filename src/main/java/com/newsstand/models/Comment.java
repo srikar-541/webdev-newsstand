@@ -27,7 +27,6 @@ public class Comment {
     @Expose
     private Article article;
 
-    @ManyToOne()
     @Expose
     private Integer user;
 
