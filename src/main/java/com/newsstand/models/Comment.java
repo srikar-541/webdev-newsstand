@@ -27,21 +27,14 @@ public class Comment {
     @Expose
     private Article article;
 
+    @ManyToOne()
     @Expose
-    private Integer user;
+    private User user;
 
     @Expose
     @Lob
     @Column(length=50000)
     private String comment;
-
-    public String getCommentDate() {
-        return commentDate;
-    }
-
-    public void setCommentDate(String commentDate) {
-        this.commentDate = commentDate;
-    }
 
     private String commentDate;
 
@@ -65,12 +58,20 @@ public class Comment {
         this.article = article;
     }
 
-    public Integer getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Integer user) {
+    public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getCommentDate() {
+        return commentDate;
+    }
+
+    public void setCommentDate(String commentDate) {
+        this.commentDate = commentDate;
     }
 
     public String getComment() {
