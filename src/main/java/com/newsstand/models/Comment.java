@@ -40,7 +40,7 @@ public class Comment {
     private String commentDate;
 
     @Column(name="user_id", updatable=false, insertable=false)
-    private Integer user_id;
+    private Integer userId;
 
     public Comment() {
 
@@ -86,11 +86,11 @@ public class Comment {
         this.comment = comment;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

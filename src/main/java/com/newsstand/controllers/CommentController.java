@@ -29,7 +29,7 @@ public class CommentController {
         User currentUser = (User) session.getAttribute("currentUser");
         Article article = articleService.findArticleById(articleId);
         if (currentUser != null) {
-            newComment.setUser_id(currentUser.getId());
+            newComment.setUserId(currentUser.getId());
             newComment.setUser(currentUser);
             newComment.setArticle(article);
             return service.createComment(newComment);
