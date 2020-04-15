@@ -36,6 +36,16 @@ public class Comment {
     @Column(length=50000)
     private String comment;
 
+    public String getCommentDate() {
+        return commentDate;
+    }
+
+    public void setCommentDate(String commentDate) {
+        this.commentDate = commentDate;
+    }
+
+    private String commentDate;
+
     public Comment() {
 
     }
