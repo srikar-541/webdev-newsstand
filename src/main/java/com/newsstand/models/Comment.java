@@ -31,7 +31,7 @@ public class Comment {
 //    @Expose
 //    private User user;
 
-    @ManyToOne
+//    @ManyToOne
     @Expose
     private Integer userId;
 
