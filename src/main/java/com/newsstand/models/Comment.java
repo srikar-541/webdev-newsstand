@@ -28,6 +28,7 @@ public class Comment {
     private Article article;
 
     @ManyToOne()
+    @JsonIgnore
     @Expose
     private User user;
 
