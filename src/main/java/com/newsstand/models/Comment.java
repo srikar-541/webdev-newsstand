@@ -29,7 +29,7 @@ public class Comment {
 
     @ManyToOne()
     @Expose
-    private User user;
+    private Integer user;
 
     @Expose
     @Lob
@@ -66,11 +66,11 @@ public class Comment {
         this.article = article;
     }
 
-    public User getUser() {
+    public Integer getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Integer user) {
         this.user = user;
     }
 
