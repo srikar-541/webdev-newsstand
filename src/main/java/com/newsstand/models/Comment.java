@@ -27,9 +27,13 @@ public class Comment {
     @Expose
     private Article article;
 
-    @ManyToOne()
+//    @ManyToOne()
+//    @Expose
+//    private User user;
+
+    @ManyToOne
     @Expose
-    private User user;
+    private Integer userId;
 
     @Expose
     @Lob
@@ -58,12 +62,18 @@ public class Comment {
         this.article = article;
     }
 
-    public User getUser() {
-        return user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+    public Integer getUserId() {
+    return userId;
+}
 
-    public void setUser(User user) {
-        this.user = user;
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getCommentDate() {
