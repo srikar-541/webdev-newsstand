@@ -18,7 +18,6 @@ public class CommentService {
 
     public Set<Comment> getComments(Article article) {
         return commentRepository.getComments(article.getId());
-
     }
 
     public Comment getCommentById(Integer commentId) {

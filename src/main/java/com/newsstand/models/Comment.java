@@ -31,6 +31,18 @@ public class Comment {
     @JsonIgnore
     @Expose
     private User user;
+
+    @Expose
+    private Integer userId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     @Expose
     @Lob
     @Column(length=50000)

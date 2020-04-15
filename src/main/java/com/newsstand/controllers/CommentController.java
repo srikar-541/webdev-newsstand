@@ -29,6 +29,7 @@ public class CommentController {
         User currentUser = (User) session.getAttribute("currentUser");
         Article article = articleService.findArticleById(articleId);
         if (currentUser != null) {
+                newComment.setUserId(currentUser.getId());
                 newComment.setUser(currentUser);
                 newComment.setArticle(article);
                 return service.createComment(newComment);
@@ -83,7 +84,6 @@ public class CommentController {
         Article article = articleService.findArticleById(articleId);
         if (currentUser != null){
             return service.getComments(article);
-
         }
         throw new AuthenticationException("User not logged in");
     }
