@@ -46,5 +46,11 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
     @Query(nativeQuery = true, value = "DELETE FROM comment WHERE article_id=:articleId")
     void deleteComments( @Param("articleId") int articleId);
 
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM likes WHERE user_id=:id")
+    void deleteLikesByAUser(
+            @Param("id") int id);
+
 
 }

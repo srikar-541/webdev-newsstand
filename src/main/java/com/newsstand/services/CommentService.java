@@ -2,6 +2,8 @@ package com.newsstand.services;
 
 import com.newsstand.models.Article;
 import com.newsstand.models.Comment;
+import com.newsstand.repositories.ArticleRepository;
+import com.newsstand.repositories.CategoryRepository;
 import com.newsstand.repositories.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,4 +35,9 @@ public class CommentService {
     public void deleteComment(Comment comment) {
         commentRepository.delete(comment);
     }
+
+    public void deleteCommentsByAUser(int userId){
+        commentRepository.deleteCommentsByAUser(userId);
+    }
+
 }
