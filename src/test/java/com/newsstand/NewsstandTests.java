@@ -1,4 +1,4 @@
-//package com.moviehub;
+//package com.newsstand;
 //
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@
 //
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
-//public class MoviehubServerApplicationTests {
+//public class NewsstandTests {
 //
 //	@Test
 //	public void contextLoads() {
