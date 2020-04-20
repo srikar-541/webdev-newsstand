@@ -79,11 +79,7 @@ public class ArticleController {
 
     @GetMapping("/api/articles/category/{category}")
     public List<Article> findArticleByCategory(@PathVariable("category") String category, HttpSession session) throws AuthenticationException {
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser != null) {
-            return service.getArticlesByCategory(category);
-        }
-        throw new AuthenticationException("User not logged in");
+        return service.getArticlesByCategory(category);
     }
 
 
@@ -125,10 +121,4 @@ public class ArticleController {
         }
         throw new AuthenticationException("User not logged in");
     }
-
-
-
-
-
-
 }
