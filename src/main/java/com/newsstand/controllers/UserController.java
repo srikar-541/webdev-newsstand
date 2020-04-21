@@ -171,7 +171,10 @@ public class UserController {
     @PutMapping("/api/user/{uid}")
     public User update(@PathVariable("uid") Integer userId, @RequestBody User user, HttpSession session) {
 
+        System.out.println("In update profile");
+
         Optional<User> optionalObject = userRepository.findById(userId);
+        System.out.println("optional obj : "+optionalObject.get().getUsername());
         if (!optionalObject.isPresent()) {
             return new User();
         }
@@ -179,6 +182,7 @@ public class UserController {
 
         Set<Category> oldCategories = existingUser.getCategories();
         for (Category c: oldCategories) {
+            System.out.println("old cats : "+c.getCategory());
             categoryRepository.delete(c);
         }
         existingUser.set(user);
@@ -188,9 +192,12 @@ public class UserController {
             existingUser.getCategories().add(c);
             c.setUser(existingUser);
             categoryRepository.save(c);
+            System.out.println("new cats : "+c.getCategory());
         }
 
         User updatedUser = userRepository.save(existingUser);
+        System.out.println("updated user : "+updatedUser.getUsername());
+        System.out.println("updated user cats : "+updatedUser.getCategories());
         return updatedUser;
     }
 
