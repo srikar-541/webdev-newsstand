@@ -32,4 +32,8 @@ public class CommentService {
     public void deleteComment(Comment comment) {
         commentRepository.delete(comment);
     }
+
+    public void deleteCommentsByAUser(int userId){
+        commentRepository.deleteCommentsByAUser(userId);
+    }
 }

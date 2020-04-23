@@ -2,7 +2,7 @@ package com.newsstand.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+import com.newsstand.services.CommentService;
 import java.util.*;
 
 import javax.security.sasl.AuthenticationException;
@@ -12,13 +12,7 @@ import com.newsstand.models.*;
 import com.newsstand.repositories.CategoryRepository;
 import com.newsstand.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.newsstand.repositories.UserRepository;
 
@@ -32,6 +26,8 @@ public class UserController {
     CategoryRepository categoryRepository;
     @Autowired
     ArticleService articleService;
+    @Autowired
+    CommentService commentService;
 
     @PostMapping("/api/register")
     public User register(@RequestBody User user, HttpSession session) throws AuthenticationException {
@@ -220,5 +216,25 @@ public class UserController {
             return articleService.getArticlesWrittenByUser(user);
         }
         throw new AuthenticationException("User not logged in");
+    }
+    @DeleteMapping("/api/user/{uid}")
+    public void deleteUser(@PathVariable("uid") Integer userId, HttpSession session) throws AuthenticationException {
+        User currentUser = (User) session.getAttribute("currentUser");
+        User user = findUserById(userId, session);
+        if (currentUser != null) {
+            if (currentUser.getRole() == Role.ADMIN) {
+                articleService.deleteLikesByAUser(userId);
+                commentService.deleteCommentsByAUser(userId);
+                articleService.deleteArticlesByAUser(user);
+                categoryRepository.deleteCategoriesofAUser(userId);
+            }
+            else{
+                throw new AuthenticationException("Only Admins can delete users");
+            }
+
+        }
+        else {
+            throw new AuthenticationException("User not logged in");
+        }
     }
 }

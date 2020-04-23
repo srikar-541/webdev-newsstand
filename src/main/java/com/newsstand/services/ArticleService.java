@@ -89,4 +89,14 @@ public class ArticleService {
     public Set<User> getLikedUsers(Article article){
         return userRepository.getLikedUsers(article.getId());
     }
+
+    public void deleteLikesByAUser(int userId){
+        articleRepository.deleteLikesByAUser(userId);
+    }
+
+    public void deleteArticlesByAUser(User user){
+        for (Article a: user.getCreatedArticles()){
+            deleteArticle(a);
+        }
+    }
 }
