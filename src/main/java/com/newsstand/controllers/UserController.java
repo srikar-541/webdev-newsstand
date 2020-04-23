@@ -223,6 +223,8 @@ public class UserController {
         User user = findUserById(userId, session);
         if (currentUser != null) {
             if (currentUser.getRole() == Role.ADMIN) {
+                System.out.println("Inside deleettee!!!!!!!!!!!");
+
                 articleService.deleteLikesByAUser(userId);
                 commentService.deleteCommentsByAUser(userId);
                 articleService.deleteArticlesByAUser(user);
