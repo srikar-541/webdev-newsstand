@@ -70,11 +70,7 @@ public class ArticleController {
 
     @GetMapping("/api/article/{aid}")
     public Article findArticleById(@PathVariable("aid") Integer aid, HttpSession session) throws AuthenticationException {
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser != null) {
             return service.findArticleById(aid);
-        }
-        throw new AuthenticationException("User not logged in");
     }
 
     @GetMapping("/api/articles/category/{category}")

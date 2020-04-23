@@ -78,11 +78,8 @@ public class CommentController {
 
     @GetMapping("/api/article/{aid}/comments")
     public Set<Comment> getComments(@PathVariable ("aid") Integer articleId, HttpSession session) throws AuthenticationException {
-        User currentUser = (User) session.getAttribute("currentUser");
         Article article = articleService.findArticleById(articleId);
-        if (currentUser != null){
             return service.getComments(article);
-        }
-        throw new AuthenticationException("User not logged in");
+
     }
 }
