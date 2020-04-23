@@ -223,8 +223,8 @@ public class UserController {
         User user = findUserById(userId, session);
         if (currentUser != null) {
             if (currentUser.getRole() == Role.ADMIN) {
-                System.out.println("Inside deleettee!!!!!!!!!!!");
-
+                System.out.println("Inside deleettee!!!!!!!!!!!" + userId);
+//                System.out.println();
                 articleService.deleteLikesByAUser(userId);
                 commentService.deleteCommentsByAUser(userId);
                 articleService.deleteArticlesByAUser(user);
@@ -233,7 +233,6 @@ public class UserController {
             else{
                 throw new AuthenticationException("Only Admins can delete users");
             }
-
         }
         else {
             throw new AuthenticationException("User not logged in");
