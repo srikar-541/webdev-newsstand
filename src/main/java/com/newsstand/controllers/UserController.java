@@ -229,6 +229,7 @@ public class UserController {
                 commentService.deleteCommentsByAUser(userId);
                 articleService.deleteArticlesByAUser(user);
                 categoryRepository.deleteCategoriesofAUser(userId);
+                userRepository.delete(user);
             }
             else{
                 throw new AuthenticationException("Only Admins can delete users");
