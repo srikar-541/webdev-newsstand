@@ -19,6 +19,7 @@ public class Article {
     private String source_id;
     private String source_name;
     private String author;
+    private Integer authorId;
     private String title;
     private String description;
     private String imageUrl;
@@ -168,6 +169,14 @@ public class Article {
 
     public void setCreatedUser(User createdUser) {
         this.createdUser = createdUser;
+    }
+
+    public Integer getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Integer authorId) {
+        this.authorId = authorId;
     }
 
     public void populate(){
