@@ -149,7 +149,7 @@ public class User {
 
     User user = (User) o;
     System.out.println(user.getId());
-    return this.id == user.getId();
+    return this.id.equals(user.getId());
 
   }
   @Override
