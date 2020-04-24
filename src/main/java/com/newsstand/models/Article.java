@@ -22,13 +22,11 @@ public class Article {
     private Integer authorId;
     private String title;
     @Lob
-    @Column(name="description", length=65535)
     private String description;
     private String imageUrl;
     private String url;
     private String publishedDate;
     @Lob
-    @Column(name="content", length=65535)
     private String content;
     private String category;
 
